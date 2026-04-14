@@ -25,6 +25,21 @@ export default function Home() {
     setActiveLayers((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  // Fetch real WIMD data from our API route
+  const fetchWimd = async (lat: number, lng: number) => {
+    try {
+      const res = await fetch(`/api/wimd?lat=${lat}&lng=${lng}`);
+      const data = await res.json();
+      if (data.overallDecile) {
+        setWimdDecile(Number(data.overallDecile));
+      } else {
+        setWimdDecile(null);
+      }
+    } catch {
+      setWimdDecile(null);
+    }
+  };
+
   // Postcode search
   const handleSearch = async (postcode: string) => {
     setLoading(true);
@@ -36,8 +51,7 @@ export default function Home() {
         setLocation(d);
         setMarkerPosition({ lat: d.latitude, lng: d.longitude });
         setFlyTo({ lat: d.latitude, lng: d.longitude });
-        // Simulated WIMD decile (Phase 5 replaces this with real WFS data)
-        setWimdDecile(simulateDecile(d.lsoa));
+        await fetchWimd(d.latitude, d.longitude);
       }
     } catch (err) {
       console.error('Postcode lookup failed:', err);
@@ -55,7 +69,7 @@ export default function Home() {
       if (json.status === 200 && json.result?.length) {
         const d = json.result[0];
         setLocation(d);
-        setWimdDecile(simulateDecile(d.lsoa));
+        await fetchWimd(lat, lng);
       }
     } catch (err) {
       console.error('Reverse geocode failed:', err);
@@ -72,7 +86,7 @@ export default function Home() {
         onSearch={handleSearch}
         wimdDecile={wimdDecile}
       />
-      <main className="bg-[var(--bg)] overflow-hidden">
+      <main className="bg-[var(--bg)] overflow-hidden max-md:order-[-1]">
         <Map
           activeLayers={activeLayers}
           markerPosition={markerPosition}
@@ -83,12 +97,4 @@ export default function Home() {
       </main>
     </>
   );
-}
-
-// Temporary — replaced by real WFS in Phase 5
-function simulateDecile(lsoa: string | null): number {
-  if (!lsoa) return 5;
-  let h = 0;
-  for (let i = 0; i < lsoa.length; i++) h = ((h << 5) - h) + lsoa.charCodeAt(i) | 0;
-  return (Math.abs(h) % 10) + 1;
 }
