@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 const Header = () => {
   return (
-    <header className="col-span-full">
+    <header className="col-span-full max-md:order-first">
       {/* Top stripe */}
       <div className="grid grid-cols-3 h-1">
         <div className="bg-(--welsh-green)"></div>

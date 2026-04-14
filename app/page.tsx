@@ -77,24 +77,24 @@ export default function Home() {
     setLoading(false);
   };
 
-  return (
-    <>
-      <Sidebar
+ return (
+  <>
+    <Sidebar
+      activeLayers={activeLayers}
+      onToggleLayer={handleToggleLayer}
+      location={location}
+      onSearch={handleSearch}
+      wimdDecile={wimdDecile}
+    />
+    <main className="bg-[var(--bg)] overflow-hidden max-md:order-[-1] max-md:h-[50vh]">
+      <Map
         activeLayers={activeLayers}
-        onToggleLayer={handleToggleLayer}
-        location={location}
-        onSearch={handleSearch}
-        wimdDecile={wimdDecile}
+        markerPosition={markerPosition}
+        flyTo={flyTo}
+        onMapClick={handleMapClick}
+        loading={loading}
       />
-      <main className="bg-[var(--bg)] overflow-hidden max-md:order-[-1]">
-        <Map
-          activeLayers={activeLayers}
-          markerPosition={markerPosition}
-          flyTo={flyTo}
-          onMapClick={handleMapClick}
-          loading={loading}
-        />
-      </main>
-    </>
-  );
+    </main>
+  </>
+);
 }
