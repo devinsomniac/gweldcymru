@@ -56,6 +56,18 @@ function MapClickHandler({ onClick }: { onClick: (lat: number, lng: number) => v
   return null;
 }
 
+function FixMapSize() {
+  const map = useMap();
+
+  useEffect(() => {
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+  }, [map]);
+
+  return null;
+}
+
 interface MapProps {
   activeLayers: Record<string, boolean>;
   markerPosition: { lat: number; lng: number } | null;
@@ -74,6 +86,7 @@ export default function Map({ activeLayers, markerPosition, flyTo, onMapClick, l
         zoomControl={true}
         attributionControl={false}
       >
+        <FixMapSize />
         {/* Dark basemap */}
         <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" maxZoom={19} />
 
