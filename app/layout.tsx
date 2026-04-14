@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${dmSans.variable}`}>
       <body className="font-[family-name:var(--font-body)]">
-        <div className="grid grid-cols-[390px_1fr] grid-rows-[auto_1fr] h-screen">
+        <div className="grid grid-cols-[390px_1fr] max-md:grid-cols-1 grid-rows-[auto_1fr] max-md:grid-rows-[auto_50vh_1fr] h-screen max-md:h-auto max-md:min-h-screen">
           <Header />
           {children}
         </div>
