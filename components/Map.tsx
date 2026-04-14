@@ -9,17 +9,17 @@ import 'leaflet/dist/leaflet.css';
 const DMW = 'https://datamap.gov.wales/geoserver/ows';
 
 const WMS_LAYERS: Record<string, string> = {
-  wimd: 'inspire-wg:wimd2019',
+  wimd: 'inspire-wg:wimd2019_overall',
   flood: 'inspire-nrw:NRW_FLOODZONE_RIVERS_SEAS_MERGED',
   floodwarn: 'inspire-nrw:NRW_FLOOD_WARNING',
-  lsoa: 'inspire-wg:lsoa2011',
+  lsoa: 'geonode:lsoa_2021_w_hwm',
 };
 
 const WMS_OPACITY: Record<string, number> = {
   wimd: 0.55,
   flood: 0.5,
   floodwarn: 0.45,
-  lsoa: 0.3,
+  lsoa: 1.5,
 };
 
 // Custom red marker
