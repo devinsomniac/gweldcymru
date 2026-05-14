@@ -1,7 +1,7 @@
 // components/Map.tsx
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { MapContainer, TileLayer, WMSTileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -9,17 +9,29 @@ import 'leaflet/dist/leaflet.css';
 const DMW = 'https://datamap.gov.wales/geoserver/ows';
 
 const WMS_LAYERS: Record<string, string> = {
-  wimd: 'inspire-wg:wimd2019_overall',
-  flood: 'inspire-nrw:NRW_FLOODZONE_RIVERS_SEAS_MERGED',
+  // Citizen mode layers
+  wimd: 'geonode:wimd2025_overall',
+  flood: 'inspire-nrw:FloodMapforPlanningFloodZones2and3',
   floodwarn: 'inspire-nrw:NRW_FLOOD_WARNING',
   lsoa: 'geonode:lsoa_2021_w_hwm',
+  // Planner mode layers
+  monuments: 'inspire-wg:Cadw_SAM',
+  listed: 'inspire-wg:Cadw_ListedBuildings',
+  worldheritage: 'inspire-wg:WorldHeritageSites',
+  sssi: 'inspire-nrw:NRW_SSSI',
+  nationalpark: 'inspire-nrw:NRW_NATIONAL_PARK',
 };
 
 const WMS_OPACITY: Record<string, number> = {
   wimd: 0.55,
   flood: 0.5,
   floodwarn: 0.45,
-  lsoa: 1.5,
+  lsoa: 1.0,
+  monuments: 0.7,
+  listed: 0.7,
+  worldheritage: 0.6,
+  sssi: 0.5,
+  nationalpark: 0.4,
 };
 
 // Custom red marker
@@ -56,15 +68,14 @@ function MapClickHandler({ onClick }: { onClick: (lat: number, lng: number) => v
   return null;
 }
 
+// Fix Leaflet sizing when the container changes
 function FixMapSize() {
   const map = useMap();
-
   useEffect(() => {
     setTimeout(() => {
       map.invalidateSize();
     }, 100);
   }, [map]);
-
   return null;
 }
 
@@ -88,9 +99,12 @@ export default function Map({ activeLayers, markerPosition, flyTo, onMapClick, l
       >
         <FixMapSize />
         {/* Dark basemap */}
-        <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" maxZoom={19} />
+        <TileLayer
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          maxZoom={19}
+        />
 
-        {/* WMS layers from DataMapWales */}
+        {/* WMS layers from DataMapWales — only render the ones toggled on */}
         {Object.entries(WMS_LAYERS).map(([key, layerName]) =>
           activeLayers[key] ? (
             <WMSTileLayer

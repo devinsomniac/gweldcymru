@@ -2,7 +2,9 @@
 import type { Metadata } from "next";
 import { Fraunces, DM_Sans } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+
+
+
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -31,7 +33,7 @@ export default function RootLayout({
     <html lang="en" className={`${fraunces.variable} ${dmSans.variable}`}>
       <body className="font-[family-name:var(--font-body)]">
         <div className="grid grid-cols-[390px_1fr] grid-rows-[auto_1fr] h-screen max-md:grid-cols-1 max-md:grid-rows-[auto_50vh_auto] max-md:h-auto max-md:overflow-y-auto">
-                  <Header />
+         
           {children}
         </div>
       </body>

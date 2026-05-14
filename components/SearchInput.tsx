@@ -1,4 +1,3 @@
-// components/SearchInput.tsx
 'use client';
 
 import { useState } from 'react';
@@ -17,7 +16,7 @@ export default function SearchInput({ onSearch }: SearchInputProps) {
   };
 
   return (
-    <div className="p-5 border-b border-[var(--border)]">
+    <div className='p-5 border-b border-[var(--border)]'>
       <p className="text-[10px] tracking-[2px] uppercase text-[var(--text-dim)] font-semibold mb-2.5">
         Search Postcode
       </p>
@@ -38,10 +37,10 @@ export default function SearchInput({ onSearch }: SearchInputProps) {
         <input
           type="text"
           placeholder="e.g. CF10 3AT, SA1 1DP"
+          autoComplete="off"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          autoComplete="off"
           className="w-full py-3 pl-11 pr-4 bg-[var(--surface2)] border-[1.5px] border-[var(--border)] rounded-[10px] text-[var(--text)] text-sm outline-none placeholder:text-[var(--text-dim)] focus:border-[var(--welsh-red)] focus:shadow-[0_0_0_3px_var(--welsh-red-glow)] focus:bg-[var(--surface3)] transition-all duration-200"
         />
       </div>

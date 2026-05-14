@@ -1,6 +1,15 @@
-import Image from 'next/image'
+'use client';
 
-const Header = () => {
+import Image from 'next/image';
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+
+interface HeaderProps {
+  plannerMode: boolean;
+  onTogglePlanner: (next: boolean) => void;
+}
+
+const Header = ({ plannerMode, onTogglePlanner }: HeaderProps) => {
   return (
     <header className="col-span-full max-md:order-first">
       {/* Top stripe */}
@@ -12,7 +21,7 @@ const Header = () => {
 
       {/* Navbar */}
       <nav className="bg-(--surface2) px-3 py-3 md:px-6 md:py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-        
+
         {/* Left */}
         <div className="flex items-center gap-3">
           <Image src="/wales.png" alt="wales logo" height={40} width={70} />
@@ -22,12 +31,24 @@ const Header = () => {
               Gweld <span className="text-(--welsh-red)">Cymru</span>
             </h2>
             <p className="text-xs md:text-sm text-(--text-muted)">
-              See Wales · Know Your Neighbourhood
+              {plannerMode
+                ? 'Planning Mode · Site Constraints Check'
+                : 'See Wales · Know Your Neighbourhood'}
             </p>
           </div>
         </div>
 
-        {/* Right badge */}
+        {/* Right: switch */}
+        <div className="flex items-center space-x-2">
+          <Label htmlFor="citizen-mode">Citizen Mode</Label>
+          <Switch
+            id="planner-mode"
+            checked={plannerMode}
+            onCheckedChange={onTogglePlanner}
+          />
+          <Label htmlFor="planner-mode">Planner Mode</Label>
+        </div>
+
         <div className="bg-(--surface) px-3 py-2 flex items-center gap-2 rounded-xl w-full md:w-auto">
           <div className="h-2 w-2 bg-green-400 rounded-full animate-pulse"></div>
           <p className="text-xs text-(--text-muted) whitespace-nowrap">
@@ -37,7 +58,7 @@ const Header = () => {
 
       </nav>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
